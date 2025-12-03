@@ -2,6 +2,27 @@
 Day 2: Gift Shop
 """
 
+def is_invalid_part2(n):
+    """Check if ID is made of digits repeated at least twice"""
+    s = str(n)
+    length = len(s)
+    
+    # try all possible pattern lengths (must repeat at least 2 times)
+    for pattern_len in range(1, length // 2 + 1):
+        if length % pattern_len != 0:
+            continue
+        
+        num_repeats = length // pattern_len
+        if num_repeats < 2:
+            continue
+        
+        pattern = s[:pattern_len]
+        # check if the whole string is just this pattern repeated
+        if s == pattern * num_repeats:
+            return True
+    
+    return False
+
 def generate_invalid_ids(max_num):
     """Generate all invalid IDs (digits repeated twice) up to max_num"""
     invalid = []
@@ -55,6 +76,15 @@ def main():
                 break  # only count once even if in multiple ranges
     
     print(f"Part 1: {total}")
+    
+    # part 2: check all numbers in ranges for repeating patterns
+    total2 = 0
+    for start, end in ranges:
+        for n in range(start, end + 1):
+            if is_invalid_part2(n):
+                total2 += n
+    
+    print(f"Part 2: {total2}")
 
 if __name__ == '__main__':
     main()
